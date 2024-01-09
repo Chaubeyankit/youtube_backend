@@ -13,7 +13,7 @@ const generateAccessAndRefreshToken = async function (userId) {
       user.refreshToken = refreshToken
       await user.save({ validateBeforeSave: false })
 
-      return { refreshToken, accessRoken }
+      return { refreshToken, accessToken }
 
    } catch (error) {
       throw new ApiError(500, "server error while generation token, plese try again !!")
@@ -90,7 +90,7 @@ const userLogin = asyncHandler(async (req, res) => {
    */
 
    const { email, username, password } = req.body
-   if (!email || !username) {
+   if (!email && !username) {
       throw new ApiError(400, "username or password is required")
    }
    const isUserExist = await User.findOne({
@@ -104,7 +104,7 @@ const userLogin = asyncHandler(async (req, res) => {
    if (!isPasswordValid) {
       throw new ApiError(401, "invalid user credentials !!")
    }
-   const { refreshToken, accessToken } = await generateAccessAndRefreshToken(isPasswordValid._id)
+   const { refreshToken, accessToken } = await generateAccessAndRefreshToken(isUserExist._id)
 
    const loggedInUser = await User.findById(isUserExist._id).select("-password -refreshToken")
 
