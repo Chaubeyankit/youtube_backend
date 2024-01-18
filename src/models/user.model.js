@@ -57,6 +57,7 @@ userSchema.methods.isPasswordCorrect = async function (password) {
    return await bcrypt.compare(password, this.password)
 }
 
+//not use arrow function, kyo ki uske pass this ka access nahi hota
 userSchema.methods.generateAccessToken = function () {
    return jwt.sign(
       {

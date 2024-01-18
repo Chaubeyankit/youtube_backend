@@ -7,6 +7,8 @@ cloudinary.config({
    api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
+const regex = /\/v\d+\/([^/]+)\.\w{3,4}$/;
+
 const uploadOnCloudinary = async function (localFilePath) {
    try {
       if (!localFilePath) return null;
@@ -21,4 +23,23 @@ const uploadOnCloudinary = async function (localFilePath) {
    }
 }
 
-export { uploadOnCloudinary }
+const destroyAssetFromCloudinary = async function (public_id) {
+   try {
+      if (!public_id) {
+         return null;
+      }
+      const response = await cloudinary.uploader.destroy(public_id)
+      return response;
+   } catch (error) {
+      return null;
+   }
+}
+
+const getPublicIdFromUrl = async (url) => {
+   const match = await url.match(regex);
+   return match ? match[1] : null;
+};
+
+
+
+export { uploadOnCloudinary, destroyAssetFromCloudinary, getPublicIdFromUrl }
