@@ -210,7 +210,7 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 const getCurrentUser = asyncHandler(async (req, res) => {
    return res
       .status(200)
-      .json(200, req.user, "current user fetch successfully")
+      .json(new ApiResponse(200, req.user, "current user fetch successfully"))
 })
 
 const updateAccountDetails = asyncHandler(async (req, res) => {
@@ -305,7 +305,7 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
 })
 
 
-const getUserChannerlProfile = asyncHandler(async (req, res) => {
+const getUserChannelProfile = asyncHandler(async (req, res) => {
    const { username } = req.params
    if (!username?.trim()) {
       throw new ApiError(400, "Username is missing")
@@ -440,6 +440,6 @@ export {
    updateAccountDetails,
    updateUserAvatar,
    updateUserCoverImage,
-   getUserChannerlProfile,
+   getUserChannelProfile,
    getWatchHistory
 }
